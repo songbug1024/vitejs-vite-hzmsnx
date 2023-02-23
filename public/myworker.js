@@ -1,7 +1,12 @@
 // Worker 线程
+console.log('worker loaded');
 let ia;
 onmessage = function (ev) {
-  ia = ev.data;
-  console.log(ia.length); // 100000
-  console.log(ia[37]); // 输出 163，因为这是第38个质数
+  if (ev.data.from) {
+    ia = new Int32Array(ev.data.buffer);
+    console.log('onmessage: ' + ev.data.from, ia.length, ia[ia.length - 1]);
+  } else {
+    ia = ev.data;
+    console.log('onmessage: SharedArrayBuffer', ia.length, ia[ia.length - 1]);
+  }
 };
